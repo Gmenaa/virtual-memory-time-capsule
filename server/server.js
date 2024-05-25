@@ -1,16 +1,19 @@
 const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
+const dotenv = require('dotenv');
 
 const app = express()
 app.use(cors())
 
-const db = mysql.createConnection ({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "vmtc"
-})
+dotenv.config();
+
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
+});
 
 app.get('/', (re, res) => {
     return res.json("From server side.")
