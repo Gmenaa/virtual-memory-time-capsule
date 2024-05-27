@@ -1,41 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
+import Home from './Home'
+import Register from './Register'
+import Login from './Login'
 
 const App = () => {
-  const [data, setData] = useState([])
-  useEffect (() => {
-    fetch('http://localhost:8081/users')
-    .then(res => res.json())
-    .then(data => setData(data))
-    .catch(err => console.log(err))
-  }, [])
-
   return (
-    <div>
-      <table>
-        <thead>
-          <th>ID</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Username</th>
-          <th>Created at</th>
-          <th>Updated at</th>
-          <th>PFP</th>
-        </thead>
-        <tbody>
-          {data.map((d, i) => (
-            <tr key={i}>
-              <td>{d.user_id}</td>
-              <td>{d.email}</td>
-              <td>{d.password}</td>
-              <td>{d.username}</td>
-              <td>{d.created_at}</td>
-              <td>{d.updated_at}</td>
-              <td>{d.profile_pic}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/register' element={<Register />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
