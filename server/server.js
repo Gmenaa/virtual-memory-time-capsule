@@ -29,16 +29,34 @@ const db = mysql.createConnection({
     database: process.env.DB_DATABASE
 });
 
-app.get('/', (req, res) => {
-    return res.json("From server side.");
-})
-
 app.get('/users', (req, res) => {
     const sql = "SELECT * FROM users";
     db.query(sql, (err, data) => {
         if(err) return res.json(err);
         return res.json(data);
     });
+})
+
+const verifyUser = (req, res, next) => {
+    // Read cookie
+    const token = req.cookies.token;
+
+    if(!token) {
+        return res.json({Error: "You are not authenticated."});
+    } else {
+        // Verify equivalent JWT token
+        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+            if(err) {
+                return res.json({Error: "Token is not OK."});
+            } else {
+                req.name = decoded.name;
+                next();
+            }
+        })
+    }
+}
+app.get('/', verifyUser, (req, res) => {
+    return res.json({Status: "Success", name: req.name});
 })
 
 app.post('/register', (req, res) => {
@@ -66,7 +84,7 @@ app.post('/login', (req, res) => {
                 
                 if(response) {
                     // Generate JWT token
-                    const name = data[0].name;
+                    const name = data[0].username;
                     const token = jwt.sign({name}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
                     res.cookie('token', token);
                     return res.json({Status: "Success"});
@@ -78,6 +96,11 @@ app.post('/login', (req, res) => {
             return res.json({Error: "No such email exists."});
         }
     })
+})
+
+app.get('/logout', (req, res) => {
+    res.clearCookie('token')
+    return res.json({Status: "Success"});
 })
 
 app.listen(8081, () => {
