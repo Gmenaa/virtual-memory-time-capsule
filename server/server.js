@@ -1,13 +1,11 @@
 const express = require('express')
 const mysql = require('mysql2')
+const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const cookieParser = require('cookie-parser')
-
-// Bcrypt
-const salt = 10
 
 // App
 const app = express()
@@ -22,19 +20,35 @@ app.use(cookieParser())
 // Environment
 dotenv.config();
 
+// Bcrypt
+const salt = 10
+
+// MySQL and MongoDB connections
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE
 });
+mongoose.connect(process.env.MDB_CONNECTION)
 
-app.get('/users', (req, res) => {
-    const sql = "SELECT * FROM users";
-    db.query(sql, (err, data) => {
-        if(err) return res.json(err);
-        return res.json(data);
-    });
+// Models
+const TestingModel = require('./models/testing')
+
+app.get('/testing', (req, res) => {
+    console.log("hello")
+    TestingModel.find({}).then(function(test) {
+        res.json(test)
+    }).catch(function(err) {
+        res.json(err)
+    })
+})
+
+app.post('/createTesting', async (req, res) => {
+    const test = req.body;
+    const newTest = new TestingModel(test);
+    await newTest.save();
+    res.json(test);
 })
 
 const verifyUser = (req, res, next) => {
