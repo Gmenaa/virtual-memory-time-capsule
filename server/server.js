@@ -6,6 +6,9 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const cookieParser = require('cookie-parser')
+const AWS = require('aws-sdk');
+const multer = require('multer')
+const multerS3 = require('multer-s3')
 
 // App
 const app = express()
@@ -23,7 +26,7 @@ dotenv.config();
 // Bcrypt
 const salt = 10
 
-// MySQL and MongoDB connections
+// * MySQL and MongoDB connections
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -32,24 +35,54 @@ const db = mysql.createConnection({
 });
 mongoose.connect(process.env.MDB_CONNECTION)
 
+// * AWS configuration, uploading, and viewing 
+require('aws-sdk/lib/maintenance_mode_message').suppress = true; // Removes annoying warning.
+AWS.config.update({
+    region: 'us-east-2',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+const s3 = new AWS.S3();
+const myBucket = process.env.AWS_BUCKET_NAME;
+
+var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: myBucket,
+        acl: 'public-read',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key: function(req, file, cb) {
+            cb(null, file.originalname)
+        }
+    })
+});
+
+// const upload = multer({ storage: storage });
+app.post("/upload", upload.single("myPic"), (req, res) => {
+    console.log(req.file);
+    res.send("Successfully uploaded")
+})
+
+
+
+
 // Models
 const TestingModel = require('./models/testing')
 
-app.get('/testing', (req, res) => {
-    console.log("hello")
-    TestingModel.find({}).then(function(test) {
-        res.json(test)
-    }).catch(function(err) {
-        res.json(err)
-    })
-})
+// app.get('/testing', (req, res) => {
+//     TestingModel.find({}).then(function(test) {
+//         res.json(test)
+//     }).catch(function(err) {
+//         res.json(err)
+//     })
+// })
 
-app.post('/createTesting', async (req, res) => {
-    const test = req.body;
-    const newTest = new TestingModel(test);
-    await newTest.save();
-    res.json(test);
-})
+// app.post('/createTesting', async (req, res) => {
+//     const test = req.body;
+//     const newTest = new TestingModel(test);
+//     await newTest.save();
+//     res.json(test);
+// })
 
 const verifyUser = (req, res, next) => {
     // Read cookie
@@ -119,4 +152,5 @@ app.get('/logout', (req, res) => {
 
 app.listen(8081, () => {
     console.log("Listening.");
+    console.log('-- aws-sdk version--', AWS.VERSION);
 })
