@@ -49,7 +49,6 @@ var upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: myBucket,
-        acl: 'public-read',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: function(req, file, cb) {
             cb(null, file.originalname)
@@ -57,13 +56,11 @@ var upload = multer({
     })
 });
 
-// const upload = multer({ storage: storage });
+// ? SINGLE file upload to s3
 app.post("/upload", upload.single("myPic"), (req, res) => {
     console.log(req.file);
     res.send("Successfully uploaded")
 })
-
-
 
 
 // Models
@@ -152,5 +149,4 @@ app.get('/logout', (req, res) => {
 
 app.listen(8081, () => {
     console.log("Listening.");
-    console.log('-- aws-sdk version--', AWS.VERSION);
 })
