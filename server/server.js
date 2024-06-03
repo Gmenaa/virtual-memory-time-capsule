@@ -62,24 +62,9 @@ app.post("/upload", upload.single("myPic"), (req, res) => {
     res.send("Successfully uploaded")
 })
 
+// * Models
+// const TestingModel = require('./models/testing')
 
-// Models
-const TestingModel = require('./models/testing')
-
-// app.get('/testing', (req, res) => {
-//     TestingModel.find({}).then(function(test) {
-//         res.json(test)
-//     }).catch(function(err) {
-//         res.json(err)
-//     })
-// })
-
-// app.post('/createTesting', async (req, res) => {
-//     const test = req.body;
-//     const newTest = new TestingModel(test);
-//     await newTest.save();
-//     res.json(test);
-// })
 
 const verifyUser = (req, res, next) => {
     // Read cookie
@@ -111,7 +96,21 @@ app.post('/register', (req, res) => {
         const values = [req.body.name, req.body.email, hash];
         db.query(sql, [values], (err, result) => {
             if(err) return res.json({Error: "Error inserting data into the server."});
-            return res.json({Status: "Success"});
+
+            // Inserting user prefix into S3
+            const userId = result.insertId; 
+            const params = {
+                Bucket: myBucket,
+                Key: userId + '/',
+                Body: ''
+            }
+
+            s3.putObject(params, (err, data) => {
+                if(err) return res.json({Error: "Error creating folder in S3."});
+                else {
+                    return res.json({Status: "Success"});
+                }
+            })
         })
     })
 })
