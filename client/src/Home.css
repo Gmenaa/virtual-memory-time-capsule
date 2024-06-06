@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap'); /* Bungee shade */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap'); /* Outfit */
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 32px;
+}
+
+.left-nav span,
+.right-nav span,
+.btn-login,
+.bth-register {
+    padding: 0px 16px;
+}
+
+.hero {
+    background-image: url('./assets/vmtc-hero.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+.hero-text {
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    padding: 2rem;
+    width: 33%;
+}
+
+.hero-text h1 {
+    font-size: 4.5rem;
+}
+
+.hero-text h3 {
+    padding-top: 1.4rem;
+    font-size: 2.2rem;
+}
