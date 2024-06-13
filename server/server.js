@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken')
-// const authenticateToken = require('./middleware/authenticateToken');
 const bcrypt = require('bcrypt')
 const cookieParser = require('cookie-parser')
 const AWS = require('aws-sdk');
@@ -66,19 +65,7 @@ app.post("/upload", upload.single("myPic"), (req, res) => {
 // * Models
 // const TestingModel = require('./models/testing')
 
-
-app.post('/capsules', (req, res) => {
-    const sql = 'INSERT INTO capsules (owner_id, title, description, opening_date) VALUES (?)';
-    const values = [req.user.id, req.body.title, req.body.description, req.body.opening_date];
-
-    db.query(sql, [values], (err, result) => {
-        if(err) return res.json({Error: "Error inserting data into the server."});
-        else {
-            return res.json({Status: "Success"});
-        }
-    });
-})
-
+// * Middleware
 const verifyUser = (req, res, next) => {
     // Read cookie
     const token = req.cookies.token;
@@ -91,14 +78,29 @@ const verifyUser = (req, res, next) => {
             if(err) {
                 return res.json({Error: "Token is not OK."});
             } else {
-                req.user = decoded
+                req.user = decoded;
                 req.name = decoded.user.name; // Adjust as needed
+                req.id = decoded.user.id;
                 console.log("User verified:", req.user); // Logging
                 next();
             }
         })
     }
 }
+
+app.post('/capsules', verifyUser, (req, res) => {
+    console.log("Request user:", req.user);
+    const sql = 'INSERT INTO capsules (owner_id, title, description, opening_date) VALUES (?)';
+    const values = [req.id, req.body.title, req.body.description, req.body.opening_date];
+
+    db.query(sql, [values], (err, result) => {
+        if(err) return res.json({Error: "Error inserting data into the server."});
+        else {
+            return res.json({Status: "Success"});
+        }
+    });
+})
+
 app.get('/', verifyUser, (req, res) => {
     return res.json({Status: "Success", name: req.name});
 })
