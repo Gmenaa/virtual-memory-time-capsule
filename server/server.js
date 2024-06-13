@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken')
+// const authenticateToken = require('./middleware/authenticateToken');
 const bcrypt = require('bcrypt')
 const cookieParser = require('cookie-parser')
 const AWS = require('aws-sdk');
@@ -66,6 +67,18 @@ app.post("/upload", upload.single("myPic"), (req, res) => {
 // const TestingModel = require('./models/testing')
 
 
+app.post('/capsules', (req, res) => {
+    const sql = 'INSERT INTO capsules (owner_id, title, description, opening_date) VALUES (?)';
+    const values = [req.user.id, req.body.title, req.body.description, req.body.opening_date];
+
+    db.query(sql, [values], (err, result) => {
+        if(err) return res.json({Error: "Error inserting data into the server."});
+        else {
+            return res.json({Status: "Success"});
+        }
+    });
+})
+
 const verifyUser = (req, res, next) => {
     // Read cookie
     const token = req.cookies.token;
@@ -78,7 +91,9 @@ const verifyUser = (req, res, next) => {
             if(err) {
                 return res.json({Error: "Token is not OK."});
             } else {
-                req.name = decoded.name;
+                req.user = decoded
+                req.name = decoded.user.name; // Adjust as needed
+                console.log("User verified:", req.user); // Logging
                 next();
             }
         })
@@ -127,9 +142,14 @@ app.post('/login', (req, res) => {
                 
                 if(response) {
                     // Generate JWT token
-                    const name = data[0].username;
-                    const token = jwt.sign({name}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
-                    res.cookie('token', token);
+                    const user = {
+                        id: data[0].user_id,
+                        name: data[0].username,
+                        email: data[0].email,
+                        pfp: data[0].profile_pic
+                    };
+                    const token = jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
+                    res.cookie('token', token, { httpOnly: true });
                     return res.json({Status: "Success"});
                 } else {
                     return res.json({Error: "Incorrect password!"});

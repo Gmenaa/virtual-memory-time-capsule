@@ -1,15 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap'); /* Bungee shade */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap'); /* Outfit */
 
 * {
     padding: 0;
     margin: 0;
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    font-optical-sizing: auto;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     padding: 32px;
+}
+
+.left-nav {
+    display: flex;
+    align-items: center;
+}
+
+.right-nav {
+    display: flex;
+    align-items: center;
 }
 
 .left-nav span,
@@ -30,9 +42,6 @@
 }
 
 .hero-text {
-    text-align: center;
-    font-family: "Outfit", sans-serif;
-    font-optical-sizing: auto;
     padding: 2rem;
     width: 33%;
 }
@@ -44,4 +53,34 @@
 .hero-text h3 {
     padding-top: 1.4rem;
     font-size: 2.2rem;
+}
+
+.features-container {
+    background-color: #000;
+    color: #fff;
+}
+
+.features-container h1 {
+    text-align: center;
+    font-size: 4.5rem;
+    padding-top: 64px;
+}
+
+.features-container h3 {
+    font-size: 2.2rem;
+}
+
+.feature-1 {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: space-around;
+    padding-top: 128px;
+}
+
+.feature-text {
+    width: 50%;
+}
+
+.feature-1 p {
+    font-size: 32px;
 }

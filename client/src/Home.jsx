@@ -4,11 +4,14 @@ import {Link} from 'react-router-dom';
 
 import axios from 'axios';
 
+// import logo from './assets/logo.png'
+import photo_feature from './assets/photo_feature.png'
+
 import './Home.css';
 
 function Home () {
   const [auth, setAuth] = useState(false);
-  const [message, setMessage] = useState('');
+  // const [message, setMessage] = useState('');
   const [name, setName] = useState('');
 
   axios.defaults.withCredentials = true;
@@ -20,7 +23,7 @@ function Home () {
         setName(res.data.name);
       } else {
         setAuth(false);
-        setMessage(res.data.Error);
+        // setMessage(res.data.Error);
       }
     }).catch(err => console.log(err))
   }, [])
@@ -49,7 +52,7 @@ function Home () {
                         <span>Contact</span>
                     </div>
                     <div className='right-nav'>
-                        <span>Capsules</span>
+                        <Link to="/capsules" className='btn-capsules'>Capsules</Link>
                         <span>{name}</span>
                         <button className='btn-logout' onClick={handleDelete}>Logout</button>
                     </div>
@@ -65,7 +68,7 @@ function Home () {
             <header className='hero'>
                 <nav className='navbar'>
                     <div className='left-nav'>
-                        <span>LOGO</span>
+                        <span>Logo</span>
                         <span>Home</span>
                         <span>Features</span>
                         <span>How it Works</span>
@@ -75,7 +78,6 @@ function Home () {
                     <div className='right-nav'>
                         <Link to="/login" className='btn-login'>Login</Link>
                         <Link to="/register" className='btn-register'>Register</Link>
-                        <span>Capsules</span>
                     </div>
                 </nav>
                 <div className= 'hero-text'>
@@ -83,6 +85,28 @@ function Home () {
                     <h3>Create personal or shared time capsules, fill them with multimedia content, and unlock them on your chosen date</h3>
                 </div>
             </header>
+
+            <div className='features-container'>
+                <h1>Features</h1>
+                <div className='feature-1'>
+                    <div className='feature-text'>
+                        <h3>Photos and Videos</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore vero sed commodi obcaecati, enim delectus fuga fugiat ad ab! Repudiandae, atque eaque esse ipsa accusamus doloribus error. Culpa, incidunt debitis.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore vero sed commodi obcaecati, enim delectus fuga fugiat ad ab! Repudiandae, atque eaque esse ipsa accusamus doloribus error. Culpa, incidunt debitis.</p>
+                    </div>
+                    
+                    <img src={photo_feature} alt="" />
+                </div>  
+                <div className='feature-2'>
+                    
+                </div>
+                <div className='feature-3'>
+                    
+                </div>
+                <div className='feature-4'>
+                    
+                </div>
+            </div>
         </div>
 
       }
