@@ -94,9 +94,28 @@ app.post('/capsules', verifyUser, (req, res) => {
     const values = [req.id, req.body.title, req.body.description, req.body.opening_date];
 
     db.query(sql, [values], (err, result) => {
-        if(err) return res.json({Error: "Error inserting data into the server."});
+        if(err) {
+            console.error("Error inserting data into the server:", err);
+            return res.json({Error: "Error inserting data into the server."});
+        } 
         else {
-            return res.json({Status: "Success"});
+            // Inserting user prefix into S3
+            const folderPath = `${req.id}/${req.body.title}/`;
+            const params = {
+                Bucket: myBucket,
+                Key: folderPath,
+                Body: ''
+            };
+
+            s3.putObject(params, (err, data) => {
+                if (err) {
+                    console.error("Error creating folder in S3:", err, "Params:", params);
+                    return res.json({Error: "Error creating folder in S3.", Details: err.message});
+                } else {
+                    console.log("Folder created in S3:", folderPath);
+                    return res.json({Status: "Success"});
+                }
+            });
         }
     });
 })
