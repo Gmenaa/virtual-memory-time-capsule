@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-
-import {Link} from 'react-router-dom';
-
+// ! import {Link} from 'react-router-dom';
 import axios from 'axios';
+import AnchorLink from 'react-anchor-link-smooth-scroll'
 
-// import logo from './assets/logo.png'
-import photo_feature from './assets/photo_feature.png'
+// --========== REMIX ICONS ==========--
+import 'remixicon/fonts/remixicon.css'
 
-import './Home.css';
+// --========== CSS ==========--
+// import './Home.css';
+import './assets/css/Home.css';
+
+// --========== MAIN JS ==========--
+import './assets/js/Home.js'
 
 function Home () {
   const [auth, setAuth] = useState(false);
   // const [message, setMessage] = useState('');
-  const [name, setName] = useState('');
+  // ! const [name, setName] = useState('');
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -20,7 +24,7 @@ function Home () {
     .then(res => {
       if(res.data.Status === "Success") {
         setAuth(true);
-        setName(res.data.name);
+        // ! setName(res.data.name);
       } else {
         setAuth(false);
         // setMessage(res.data.Error);
@@ -28,87 +32,73 @@ function Home () {
     }).catch(err => console.log(err))
   }, [])
 
-  const handleDelete = () => {
-    axios.get('http://localhost:8081/logout')
-    // eslint-disable-next-line no-unused-vars
-    .then(res => {
-      location.reload(true);
-    }).catch(err => console.log(err))
-  }
+  // ! const handleDelete = () => {
+  // !   axios.get('http://localhost:8081/logout')
+  // !   // eslint-disable-next-line no-unused-vars
+  // !   .then(res => {
+  // !     location.reload(true);
+  // !   }).catch(err => console.log(err))
+  // ! }
 
   return (
     <div className='home-container'>
       {
         auth ?
-        <div className='hero-container'>
-            <header className='hero'>
-                <nav className='navbar'>
-                    <div className='left-nav'>
-                        <span>LOGO</span>
-                        <span>Home</span>
-                        <span>Features</span>
-                        <span>How it Works</span>
-                        <span>About us</span>
-                        <span>Contact</span>
-                    </div>
-                    <div className='right-nav'>
-                        <Link to="/capsules" className='btn-capsules'>Capsules</Link>
-                        <span>{name}</span>
-                        <button className='btn-logout' onClick={handleDelete}>Logout</button>
-                    </div>
+        <div className='home'>
+            <header className='header' id='header'>
+                <nav className='nav container'>
+                  <a href="#" className='nav__logo'>Capsules</a>
+
+                  <div className='nav__menu' id='nav-menu'>
+                    <ul className='nav__list'>
+                      <li className='nav__item'>
+                        <AnchorLink href="#home">Home</AnchorLink>
+                      </li>
+                      <li className='nav__item'>
+                        <AnchorLink href="#about">About</AnchorLink>
+                      </li>
+                      <li className='nav__item'>
+                        <AnchorLink href="#discover">Discover</AnchorLink>
+                      </li>
+                      <li className='nav__item'>
+                        <AnchorLink href="#place">Place</AnchorLink>
+                      </li>
+                    </ul>
+                    <i className='ri-close-line nav__close' id='nav-close'></i>
+                  </div>
                 </nav>
-                <div className= 'hero-text'>
-                    <h1>PRESERVE FOR THE FUTURE</h1>
-                    <h3>Create personal or shared time capsules, fill them with multimedia content, and unlock them on your chosen date</h3>
-                </div>
             </header>
         </div>
         :
-        <div className='hero-container'>
-            <header className='hero'>
-                <nav className='navbar'>
-                    <div className='left-nav'>
-                        <span>Logo</span>
-                        <span>Home</span>
-                        <span>Features</span>
-                        <span>How it Works</span>
-                        <span>About us</span>
-                        <span>Contact</span>
-                    </div>
-                    <div className='right-nav'>
-                        <Link to="/login" className='btn-login'>Login</Link>
-                        <Link to="/register" className='btn-register'>Register</Link>
-                    </div>
-                </nav>
-                <div className= 'hero-text'>
-                    <h1>PRESERVE FOR THE FUTURE</h1>
-                    <h3>Create personal or shared time capsules, fill them with multimedia content, and unlock them on your chosen date</h3>
-                </div>
-            </header>
+        <div className='home'>
+          <header className='header' id='header'>
+            <nav className='nav container'>
+              <a href="#" className='nav__logo'>Capsules</a>
 
-            <div className='features-container'>
-                <h1>Features</h1>
-                <div className='feature-1'>
-                    <div className='feature-text'>
-                        <h3>Photos and Videos</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore vero sed commodi obcaecati, enim delectus fuga fugiat ad ab! Repudiandae, atque eaque esse ipsa accusamus doloribus error. Culpa, incidunt debitis.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore vero sed commodi obcaecati, enim delectus fuga fugiat ad ab! Repudiandae, atque eaque esse ipsa accusamus doloribus error. Culpa, incidunt debitis.</p>
-                    </div>
-                    
-                    <img src={photo_feature} alt="" />
-                </div>  
-                <div className='feature-2'>
-                    
-                </div>
-                <div className='feature-3'>
-                    
-                </div>
-                <div className='feature-4'>
-                    
-                </div>
-            </div>
+              <div className='nav__menu' id='nav-menu'>
+                <ul className='nav__list'>
+                  <li className='nav__item'>
+                    <AnchorLink className='nav__link' href="#home">Home</AnchorLink>
+                  </li>
+                  <li className='nav__item'>
+                    <AnchorLink className='nav__link' href="#about">About</AnchorLink>
+                  </li>
+                  <li className='nav__item'>
+                    <AnchorLink className='nav__link' href="#discover">Discover</AnchorLink>
+                  </li>
+                  <li className='nav__item'>
+                    <AnchorLink className='nav__link' href="#place">Place</AnchorLink>
+                  </li>
+                </ul>
+                <i className='ri-close-line nav__close' id='nav-close'></i>
+              </div>
+
+              <div className='nav__toggle' id='nav-toggle'>
+                <i className='ri-function-line'></i>
+              </div>
+            </nav>
+          </header>
         </div>
-
       }
     </div>
   );
