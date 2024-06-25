@@ -19,6 +19,7 @@ const Capsules = () => {
     <div className='capsules-container'>
       <button className='btn-create-capsule' onClick={createCapsule}>Capsule +</button>
       {menu && <Modal closeMenu={closeMenu} />}
+
     </div>
   )
 }

@@ -88,6 +88,10 @@ const verifyUser = (req, res, next) => {
     }
 }
 
+// * Endpoints 
+
+
+// * Routes
 app.post('/capsules', verifyUser, (req, res) => {
     console.log("Request user:", req.user);
     const sql = 'INSERT INTO capsules (owner_id, title, description, opening_date) VALUES (?)';
