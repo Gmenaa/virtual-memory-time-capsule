@@ -88,7 +88,37 @@ const verifyUser = (req, res, next) => {
     }
 }
 
+
+
+
 // * Endpoints 
+const listDirectories = () => {
+    return new Promise((resolve, reject) => {
+        const s3params = {
+            Bucket: myBucket,
+            Delimiter: '/',
+        };
+        s3.listObjectsV2(s3params, (err, data) => {
+            if (err) {
+                console.error('Error:', err); // Add detailed logging
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+
+// Usage
+listDirectories()
+.then(data => {
+    console.log('Success:', data);
+})
+.catch(err => {
+    console.error('Error:', err);
+});
+
+
 
 
 // * Routes
@@ -193,4 +223,5 @@ app.get('/logout', (req, res) => {
 
 app.listen(8081, () => {
     console.log("Listening.");
+    // listDirectories();
 })
