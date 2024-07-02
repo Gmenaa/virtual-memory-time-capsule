@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import ReactPlayer from 'react-player';
+
 import Modal from '../components/Menu';
 import axios from 'axios';
 import './Capsules.css';
 
 const Capsules = () => {
   const [menu, setMenu] = useState(false);
+
   const [capsules, setCapsules] = useState([]);
+
+  const [video, setVideo] = useState(null);
+  const [image, setImage] = useState(null);
+  const [audio, setAudio] = useState(null)
+  const [text, setText] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // ? Fetch GET request from server using Axios
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,6 +35,10 @@ const Capsules = () => {
     };
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   setVideo(<ReactPlayer url="https://d1a372b8l9g90u.cloudfront.net/" controls={true}, [])
+  // })
 
   const createCapsule = () => {
     setMenu(true);
@@ -59,6 +73,10 @@ const Capsules = () => {
           <p>No capsules available.</p>
         )}
       </div>
+
+      {/* <div className='media'>
+        <img src="https://d1a372b8l9g90u.cloudfront.net/27/Sierra%20Madre/amfzanxbvw621.png" alt="" />
+      </div> */}
     </div>
   );
 };
