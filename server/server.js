@@ -81,26 +81,23 @@ const verifyUser = (req, res, next) => {
                 req.user = decoded;
                 req.name = decoded.user.name; // Adjust as needed
                 req.id = decoded.user.id;
-                console.log("User verified:", req.user); // Logging
                 next();
             }
         })
     }
 }
 
-
-
-
 // * Endpoints 
-const listDirectories = () => {
+const listDirectories = (req) => {
     return new Promise((resolve, reject) => {
         const s3params = {
             Bucket: myBucket,
             Delimiter: '/',
-        };
+            Prefix: `${req.id}/`
+        };  
         s3.listObjectsV2(s3params, (err, data) => {
             if (err) {
-                console.error('Error:', err); // Add detailed logging
+                console.error('Error:', err); 
                 reject(err);
             } else {
                 resolve(data);
@@ -109,19 +106,20 @@ const listDirectories = () => {
     });
 };
 
-// Usage
-listDirectories()
-.then(data => {
-    console.log('Success:', data);
-})
-.catch(err => {
-    console.error('Error:', err);
-});
-
-
-
-
 // * Routes
+app.get('/capsules', verifyUser, (req, res) => {
+    // console.log("Hello, from GET /capsules");
+
+    listDirectories(req)
+    .then(data => {
+        // console.log(data)
+        return res.json(data)
+    })
+    .catch(err => {
+        return res.status(500).json({Error: "Error listing directories", Details: err});
+    });
+})
+
 app.post('/capsules', verifyUser, (req, res) => {
     console.log("Request user:", req.user);
     const sql = 'INSERT INTO capsules (owner_id, title, description, opening_date) VALUES (?)';
