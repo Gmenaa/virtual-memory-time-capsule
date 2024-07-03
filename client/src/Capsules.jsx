@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
+
+import { Link } from 'react-router-dom';
 
 import Modal from '../components/Menu';
 import axios from 'axios';
@@ -10,10 +12,10 @@ const Capsules = () => {
 
   const [capsules, setCapsules] = useState([]);
 
-  const [video, setVideo] = useState(null);
-  const [image, setImage] = useState(null);
-  const [audio, setAudio] = useState(null)
-  const [text, setText] = useState(null);
+  // const [video, setVideo] = useState(null);
+  // const [image, setImage] = useState(null);
+  // const [audio, setAudio] = useState(null)
+  // const [text, setText] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +26,6 @@ const Capsules = () => {
       try {
         const response = await axios.get('http://localhost:8081/capsules');
         const data = response.data;
-        console.log(data); // Debugging line
         setCapsules(data.CommonPrefixes); // store fetched data in state
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -67,7 +68,12 @@ const Capsules = () => {
             // ! This makes it so a user CANNOT have a '/' character in their capsule name
             const parts = capsule.Prefix.split('/');
             const capsuleName = parts.length > 1 ? parts[1] : parts[0];
-            return <div key={index}>{capsuleName}</div>;
+            // return <div key={index}>{capsuleName}</div>;
+            return (
+              <Link key={index} to={`/capsule/${encodeURIComponent(capsule.Prefix)}`}>
+                <div>{capsuleName}</div>
+              </Link>
+            );
           })
         ) : (
           <p>No capsules available.</p>

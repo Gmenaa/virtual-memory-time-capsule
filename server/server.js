@@ -106,6 +106,25 @@ const listDirectories = (req) => {
     });
 };
 
+// ! list out selected directories contents 
+// const listDirectoryContents = (req) => {
+//     return new Promise((resolve, reject) => {
+//         const s3params = {
+//             Bucket: myBucket,
+//             Delimiter: '/',
+//             Prefix: `${req.id}/`
+//         };  
+//         s3.listObjectsV2(s3params, (err, data) => {
+//             if (err) {
+//                 console.error('Error:', err); 
+//                 reject(err);
+//             } else {
+//                 resolve(data);
+//             }
+//         });
+//     });
+// }
+
 // * Routes
 app.get('/capsules', verifyUser, (req, res) => {
     // console.log("Hello, from GET /capsules");
@@ -119,6 +138,20 @@ app.get('/capsules', verifyUser, (req, res) => {
         return res.status(500).json({Error: "Error listing directories", Details: err});
     });
 })
+
+app.get('/capsule/:prefix', verifyUser, (req, res) => {
+    const prefix = decodeURIComponent(req.params.prefix);
+    console.log("Selected prefix:", prefix);
+
+    listDirectoryContents(prefix) // ! Finish this function
+    .then(data => {
+        return res.json(data);
+    })
+    .catch(err => {
+        return res.status(500).json({ Error: "Error listing directory contents", Details: err });
+    });
+});
+
 
 app.post('/capsules', verifyUser, (req, res) => {
     console.log("Request user:", req.user);
