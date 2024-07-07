@@ -12,7 +12,8 @@ const CapsuleContent = () => {
     const fetchContent = async () => {
       try {
         const response = await axios.get(`http://localhost:8081/capsule/${encodeURIComponent(prefix)}`);
-        setContent(response.data);
+        const data = response.data;
+        setContent(data.Contents);
       } catch (error) {
         console.error('Error fetching content:', error);
         setError(error);

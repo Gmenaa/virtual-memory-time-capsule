@@ -87,7 +87,7 @@ const verifyUser = (req, res, next) => {
     }
 }
 
-// * Endpoints 
+// ! list out all user directories
 const listDirectories = (req) => {
     return new Promise((resolve, reject) => {
         const s3params = {
@@ -107,31 +107,28 @@ const listDirectories = (req) => {
 };
 
 // ! list out selected directories contents 
-// const listDirectoryContents = (req) => {
-//     return new Promise((resolve, reject) => {
-//         const s3params = {
-//             Bucket: myBucket,
-//             Delimiter: '/',
-//             Prefix: `${req.id}/`
-//         };  
-//         s3.listObjectsV2(s3params, (err, data) => {
-//             if (err) {
-//                 console.error('Error:', err); 
-//                 reject(err);
-//             } else {
-//                 resolve(data);
-//             }
-//         });
-//     });
-// }
+const listDirectoryContents = (req) => {
+    return new Promise((resolve, reject) => {
+        const s3params = {
+            Bucket: myBucket,
+            Delimiter: '/',
+            Prefix: `${req}`
+        };  
+        s3.listObjectsV2(s3params, (err, data) => {
+            if (err) {
+                console.error('Error:', err); 
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
 
 // * Routes
 app.get('/capsules', verifyUser, (req, res) => {
-    // console.log("Hello, from GET /capsules");
-
     listDirectories(req)
     .then(data => {
-        // console.log(data)
         return res.json(data)
     })
     .catch(err => {
@@ -141,9 +138,8 @@ app.get('/capsules', verifyUser, (req, res) => {
 
 app.get('/capsule/:prefix', verifyUser, (req, res) => {
     const prefix = decodeURIComponent(req.params.prefix);
-    console.log("Selected prefix:", prefix);
 
-    listDirectoryContents(prefix) // ! Finish this function
+    listDirectoryContents(prefix)
     .then(data => {
         return res.json(data);
     })
