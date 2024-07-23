@@ -44,7 +44,6 @@ function Home () {
     <div className='home-container'>
       {
         auth ?
-        <div className='home'>
           <header className='header' id='header'>
             <nav className='nav container'>
               <a href="#" className='nav__logo'>Capsules</a>
@@ -77,9 +76,7 @@ function Home () {
               </div>
             </nav>
           </header>
-        </div>
         :
-        <div className='home'>
           <header className='header' id='header'>
             <nav className='nav container'>
               <a href="#" className='nav__logo'>Capsules</a>
@@ -111,7 +108,6 @@ function Home () {
               </div>
             </nav>
           </header>
-        </div>
       }
     </div>
   );
