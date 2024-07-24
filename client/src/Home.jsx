@@ -13,6 +13,9 @@ import './assets/css/Home.css';
 import image_1 from './assets/img/temp.png'
 import image_2 from './assets/img/temp.png'
 
+import image_3 from './assets/img/temp.png'
+import image_4 from './assets/img/temp.png'
+
 // --========== MAIN JS ==========--
 import './assets/js/Home.js'
 
@@ -88,9 +91,8 @@ function Home () {
 
               <div className='home__container container grid'>
                 <div className='home__data'>
-                  <span className='home__data-subtitle'>Discover the Forgotten</span>
-                  {/* <h1 className='home__data-title'>Explore the <br> Best <b>Beautiful  <br> Beaches</b></h1> */}
-                  <h1 className='home__data-title'>Remember Those we Respect</h1>
+                  <span className='home__data-subtitle'>Rediscover the Forgotten</span>
+                  <h1 className='home__data-title'>Remembering the <b>Bygone Memories</b></h1>
                   <AnchorLink className='button' href="#">Explore</AnchorLink>
                 </div>
 
@@ -121,8 +123,30 @@ function Home () {
               </div>
             </section>
 
+
             <section className='about section' id='about'>
-              
+              <div className='about__container container grid'>
+                <div className='about__data'>
+                  <h2 className="section__title about__title">More Information on <b>Your Time Capsules</b></h2>
+                  <p className="about__description">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  </p>
+                  <a href="#" className="button">This a Button</a>
+                </div>
+              </div>
+
+              <div className="about__img">
+                <div className="about__img-overlay">
+                  <img src={image_3} alt="" className="about__img-one" />
+                </div>
+
+                <div className="about__img-overlay">
+                  <img src={image_4} alt="" className="about__img-two" /> 
+                </div>
+              </div>
             </section>
 
             <section className='discover section' id='discover'>
@@ -180,9 +204,8 @@ function Home () {
 
               <div className='home__container container grid'>
                 <div className='home__data'>
-                  <span className='home__data-subtitle'>Discover the Forgotten</span>
-                  {/* <h1 className='home__data-title'>Explore the <br> Best <b>Beautiful  <br> Beaches</b></h1> */}
-                  <h1 className='home__data-title'>Remember Those we Respect</h1>
+                  <span className='home__data-subtitle'>Rediscover the Forgotten</span>
+                  <h1 className='home__data-title'>Remembering the <b>Bygone Memories</b></h1>
                   <AnchorLink className='button' href="#">Explore</AnchorLink>
                 </div>
 
@@ -213,9 +236,32 @@ function Home () {
               </div>
             </section>
 
+
             <section className='about section' id='about'>
-              
+              <div className='about__container container grid'>
+                <div className='about__data'>
+                  <h2 className="section__title about__title">More Information on <b>Your Time Capsules</b></h2>
+                  <p className="about__description">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  </p>
+                  <a href="#" className="button">This a Button</a>
+                </div>
+              </div>
+
+              <div className="about__img">
+                <div className="about__img-overlay">
+                  <img src={image_3} alt="" className="about__img-one" />
+                </div>
+
+                <div className="about__img-overlay">
+                  <img src={image_4} alt="" className="about__img-two" /> 
+                </div>
+              </div>
             </section>
+
 
             <section className='discover section' id='discover'>
               
